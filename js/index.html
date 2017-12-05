@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="content">
+
+    </div>
+    <button>Click me to increment the counter</button>
+    <span class="counter">0</span>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .content {
+            height: 50vh;
+            width: 50vw;
+            margin: 0 auto;
+        }
+    </style>
+
+    <script src="https://unpkg.com/@reactivex/rxjs@5.5.3/dist/global/Rx.js"></script>
+
+    <script>
+        window.addEventListener('load', () => {
+
+            const clickObservable = Rx.Observable.fromEvent(document.querySelector('body'), 'click');
+
+            clickObservable
+                .map(event => event.clientX)
+                .filter(x => x > 300 && x < 800)
+                .subscribe(val => console.log(val));
+
+        });
+
+        window.addEventListener('load', () => {
+
+            const counterSpan = document.querySelector('.counter');
+
+            const clickObservable = Rx.Observable.fromEvent(document.querySelector('button'), 'click');
+
+            clickObservable.mapTo(1)
+                .scan((acc, one) => acc + one, 0)
+                .subscribe(val => counterSpan.innerHTML = val);
+
+        });
+    </script>
+</body>
+</html>
